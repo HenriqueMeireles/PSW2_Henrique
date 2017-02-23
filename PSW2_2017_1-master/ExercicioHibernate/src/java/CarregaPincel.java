@@ -42,6 +42,8 @@ public class CarregaPincel extends HttpServlet {
             
             pincel0 = (Pincel) sessao.get(Pincel.class, idPincel);
             
+            if (pincel0 != null){ 
+            
             
             out.println("Dados do Pincel 0 : ");
             out.println("cor: " + pincel0.getCor());
@@ -49,6 +51,10 @@ public class CarregaPincel extends HttpServlet {
             out.println("num_serie: " + pincel0.getNum_serie());
             
             
+            
+            }else{
+                out.println("Não encontrado o pincel de id: "+ idPincel);
+            }
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");

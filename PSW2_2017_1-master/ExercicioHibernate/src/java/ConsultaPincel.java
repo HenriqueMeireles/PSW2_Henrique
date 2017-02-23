@@ -6,18 +6,20 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
- * @author Rafael.Soares
+ * @author RA21553404
  */
-public class SalvarPincel extends HttpServlet {
+public class ConsultaPincel extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,47 +34,39 @@ public class SalvarPincel extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            
-            Pincel p3= new Pincel();
-            p3.setCor("branco");
-            p3.setFabricante("Pilot");
-            p3.setNum_serie(10254);
-     
-            
-            Session sessao = HibernateUtil.
-                                getSessionFactory()
-                                .openSession();
-            
-            Transaction tx = sessao.beginTransaction();
-            
-            sessao.save(p3);
-            sessao.flush();
-            
-            tx.commit();
-            
-            sessao.close();
-            
-               
-            
-            
-            
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SalvarPincel</title>");            
+            out.println("<title>Servlet ConsultaPincel</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Teste Servlet SalvarPincel at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ConsultaPincel at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
             
             
+            Session s = HibernateUtil
+                        .getSessionFactory()
+                        .openSession();
+            
+            Criteria criteria = s.createCriteria(Pincel.class);
+            criteria.add(Restrictions.eq("cor", "azul"));
             
             
+            List<Pincel> result = criteria.list();
             
+            out.println("Pinceis encontrados: <br>");
             
+            for(Pincel p: result){
+                
+                out.println("<br>Pincel num: " +p.getNum_serie());
+                out.println("Cor: "+ p.getCor());
+            
+            }
+            
+            s.close();
+                        
         }
     }
 
